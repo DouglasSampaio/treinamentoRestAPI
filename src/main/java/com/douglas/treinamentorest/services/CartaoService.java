@@ -30,6 +30,11 @@ public class CartaoService {
 		return repo.insert(obj);
 	}
 	
+	public void delete(String id) {
+		findById(id);
+		repo.deleteById(id);
+	}
+	
 	public Cartao fromDTO(CartaoDTO objDto) {
 		return new Cartao(objDto.getId(),objDto.getTipo(), objDto.getNumero(),objDto.getTitular(),objDto.getDataValidade(),objDto.getCodigoSeguranca(),objDto.getSenha(),objDto.getSaldo());
 	}
