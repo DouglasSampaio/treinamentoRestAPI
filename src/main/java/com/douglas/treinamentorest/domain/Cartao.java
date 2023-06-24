@@ -26,7 +26,7 @@ public class Cartao implements Serializable {
 	}
 
 	public Cartao(String id, String tipo, String numero, String titular, String dataValidade, int codigoSeguranca,
-			String senha, double saldo) {
+			String senha) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
@@ -37,7 +37,18 @@ public class Cartao implements Serializable {
 		this.senha = senha;
 		this.saldo = 500;
 	}
-
+	public Cartao(String id, String tipo, String numero, String titular, String dataValidade, int codigoSeguranca,
+			String senha, double saldo) {
+		super();
+		this.id = id;
+		this.tipo = tipo;
+		this.numero = numero;
+		this.titular = titular;
+		this.dataValidade = dataValidade;
+		this.codigoSeguranca = codigoSeguranca;
+		this.senha = senha;
+		this.saldo = saldo;
+	}
 	public String getId() {
 		return id;
 	}

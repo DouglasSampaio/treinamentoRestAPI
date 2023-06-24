@@ -4,34 +4,33 @@ import java.io.Serializable;
 
 import com.douglas.treinamentorest.domain.Cartao;
 
-
 public class CartaoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private String id;
 	private String tipo;
-    private String numero;
-    private String titular;
-    private String dataValidade;
-    private int codigoSeguranca;
-    private String senha;
-    private double saldo;
-    
-    public CartaoDTO() {
-    	
-    }
-    
-    public  CartaoDTO(Cartao obj) {
-    	id = obj.getId();
-    	tipo = obj.getTipo();
-    	titular = obj.getTitular();
-    	numero = obj.getNumero();
-    	dataValidade = obj.getDataValidade();
-    	codigoSeguranca = obj.getCodigoSeguranca();
-    	senha = obj.getSenha();
-    	saldo = obj.getSaldo();
-    	
-    }
+	private String numero;
+	private String titular;
+	private String dataValidade;
+	private int codigoSeguranca;
+	private String senha;
+	private double saldo;
+
+	public CartaoDTO() {
+
+	}
+
+	public CartaoDTO(Cartao obj) {
+		id = obj.getId();
+		tipo = obj.getTipo();
+		titular = obj.getTitular();
+		numero = obj.getNumero();
+		dataValidade = obj.getDataValidade();
+		codigoSeguranca = obj.getCodigoSeguranca();
+		senha = obj.getSenha();
+		saldo = obj.getSaldo();
+
+	}
 
 	public String getId() {
 		return id;
@@ -97,9 +96,4 @@ public class CartaoDTO implements Serializable {
 		this.saldo = saldo;
 	}
 
-	
-
-	
-    
-    
 }
