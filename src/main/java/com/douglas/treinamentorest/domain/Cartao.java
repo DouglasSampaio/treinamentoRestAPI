@@ -1,12 +1,20 @@
 package com.douglas.treinamentorest.domain;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Objects;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Cartao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int id;
+
+	private BigInteger id;
+	@Id
+	private BigInteger _id;
     private String numero;
     private String titular;
     private String dataValidade;
@@ -16,7 +24,7 @@ public class Cartao implements Serializable {
     public Cartao() {
     }
     
-    public Cartao(int id, String numero, String titular, String dataValidade, int codigoSeguranca, String senha) {
+    public Cartao(BigInteger id, String numero, String titular, String dataValidade, int codigoSeguranca, String senha) {
 		super();
 		this.id = id;
 		this.numero = numero;
@@ -28,11 +36,11 @@ public class Cartao implements Serializable {
     
     
 
-	public int getId() {
+    public BigInteger getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(BigInteger id) {
 		this.id = id;
 	}
 
