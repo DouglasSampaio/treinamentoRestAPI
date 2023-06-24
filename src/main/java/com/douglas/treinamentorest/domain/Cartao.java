@@ -11,36 +11,47 @@ public class Cartao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	//private int id;
 	@Id
 	private String id;
-    private String numero;
-    private String titular;
-    private String dataValidade;
-    private int codigoSeguranca;
-    private String senha;
-    
-    public Cartao() {
-    }
-    
-    public Cartao(String id, String numero, String titular, String dataValidade, int codigoSeguranca, String senha) {
+	private String tipo;
+	private String numero;
+	private String titular;
+	private String dataValidade;
+	private int codigoSeguranca;
+	private String senha;
+	private double saldo;
+	private double valor;
+
+	public Cartao() {
+	}
+
+	public Cartao(String id, String tipo, String numero, String titular, String dataValidade, int codigoSeguranca,
+			String senha, double saldo) {
 		super();
 		this.id = id;
+		this.tipo = tipo;
 		this.numero = numero;
 		this.titular = titular;
 		this.dataValidade = dataValidade;
 		this.codigoSeguranca = codigoSeguranca;
 		this.senha = senha;
+		this.saldo = 500;
 	}
-    
-    
 
-    public String getId() {
+	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public String getNumero() {
@@ -82,9 +93,23 @@ public class Cartao implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	
-	
+
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
+	}
+
+	public double getValor() {
+		return valor;
+	}
+
+	public void setValor(double valor) {
+		this.valor = valor;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -103,6 +128,6 @@ public class Cartao implements Serializable {
 	}
 
 	public void realizarPagamento(double valor) {
-        System.out.println("Pagamento de R$" + valor + " realizado com sucesso com o cartão " + numero);
-    }
+		System.out.println("Pagamento de R$" + valor + " realizado com sucesso com o cartão " + numero);
+	}
 }
