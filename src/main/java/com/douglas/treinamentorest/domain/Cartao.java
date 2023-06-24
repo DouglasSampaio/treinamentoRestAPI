@@ -1,7 +1,6 @@
 package com.douglas.treinamentorest.domain;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
@@ -12,9 +11,9 @@ public class Cartao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private BigInteger id;
+	//private int id;
 	@Id
-	private BigInteger _id;
+	private String id;
     private String numero;
     private String titular;
     private String dataValidade;
@@ -24,7 +23,7 @@ public class Cartao implements Serializable {
     public Cartao() {
     }
     
-    public Cartao(BigInteger id, String numero, String titular, String dataValidade, int codigoSeguranca, String senha) {
+    public Cartao(String id, String numero, String titular, String dataValidade, int codigoSeguranca, String senha) {
 		super();
 		this.id = id;
 		this.numero = numero;
@@ -36,11 +35,11 @@ public class Cartao implements Serializable {
     
     
 
-    public BigInteger getId() {
+    public String getId() {
 		return id;
 	}
 
-	public void setId(BigInteger id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

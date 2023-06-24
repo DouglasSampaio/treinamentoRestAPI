@@ -9,8 +9,7 @@ import com.douglas.treinamentorest.domain.Cartao;
 public class CartaoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private BigInteger id;
-	private BigInteger _id;
+	private String id;
     private String numero;
     private String titular;
     private String dataValidade;
@@ -31,11 +30,11 @@ public class CartaoDTO implements Serializable {
     	
     }
 
-	public BigInteger getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(BigInteger id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
