@@ -33,24 +33,13 @@ public class CartaoService {
 
 	public Cartao insert(Cartao obj) {
 		return repository.insert(obj);
+		
 	}
 
 	public void delete(String id) {
 		findById(id);
 		repository.deleteById(id);
 	}
-
-	
-//	public Cartao autorizarTransacao(String id, String senha, double valor) {
-//	    Optional<Cartao> obj = repository.findById(id);
-//	    if (obj.isEmpty() || !obj.get().getSenha().equals(senha) || obj.get().getSaldo() < valor) {
-//	        return obj.orElseThrow(() -> new ObjectNotFoundException("Cartão não autorizado"));
-//	    }    
-//	    Cartao cartao = obj.get();
-//	    cartao.setSaldo(cartao.getSaldo() - valor);    
-//	    return repository.save(cartao);
-//	}
-	
 	public Cartao update(Cartao obj) {
 		Cartao newObj = findById(obj.getId());
 		updateData(newObj, obj);
@@ -70,5 +59,9 @@ public class CartaoService {
 	public Cartao fromDTO(CartaoDTO objDto) {
 		return new Cartao(objDto.getId(), objDto.getTipo(), objDto.getNumero(), objDto.getTitular(),
 				objDto.getDataValidade(), objDto.getCodigoSeguranca(), objDto.getSenha(), objDto.getSaldo());
+	}
+	public Cartao newCartaoDto(CartaoDTO cartaoDto) {
+		return new Cartao(cartaoDto.getId(), cartaoDto.getTipo(), cartaoDto.getNumero(), cartaoDto.getTitular(),
+				cartaoDto.getDataValidade(), cartaoDto.getCodigoSeguranca(), cartaoDto.getSenha());
 	}
 }

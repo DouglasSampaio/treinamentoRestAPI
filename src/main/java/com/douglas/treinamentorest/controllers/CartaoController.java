@@ -50,8 +50,8 @@ public class CartaoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody CartaoDTO objDto) {
-		Cartao obj = service.fromDTO(objDto);
+	public ResponseEntity<Void> insert(@RequestBody CartaoDTO cartaoDTO) {
+		Cartao obj = service.newCartaoDto(cartaoDTO);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
