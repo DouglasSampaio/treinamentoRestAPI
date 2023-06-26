@@ -23,23 +23,33 @@ public class CartaoService {
 
 	public Cartao findById(String id) {
 		Optional<Cartao> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Cartao nao encontrado"));
+		return obj.orElseThrow(() -> new ObjectNotFoundException("id nao encontrado"));
 	}
-	
+
 	public Cartao findByNumero(String numero) {
-	    Optional<Cartao> obj = repository.findByNumero(numero);
-	    return obj.orElseThrow(() -> new ObjectNotFoundException("Cartão não encontrado"));
+		Optional<Cartao> obj = repository.findByNumero(numero);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Cartão não encontrado"));
+	}
+	public Cartao findBySaldo(String numero) {
+		Optional<Cartao> obj = repository.findByNumero(numero);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Cartão não encontrado"));
+	}
+
+	public Optional<Cartao> findByNumeroTeste(String numero) {
+		Optional<Cartao> obj = repository.findByNumero(numero);
+		return obj;
 	}
 
 	public Cartao insert(Cartao obj) {
 		return repository.insert(obj);
-		
+
 	}
 
 	public void delete(String id) {
 		findById(id);
 		repository.deleteById(id);
 	}
+
 	public Cartao update(Cartao obj) {
 		Cartao newObj = findById(obj.getId());
 		updateData(newObj, obj);
@@ -56,12 +66,14 @@ public class CartaoService {
 		newObj.setSaldo(obj.getSaldo());
 	}
 
-	public Cartao fromDTO(CartaoDTO objDto) {
-		return new Cartao(objDto.getId(), objDto.getTipo(), objDto.getNumero(), objDto.getTitular(),
-				objDto.getDataValidade(), objDto.getCodigoSeguranca(), objDto.getSenha(), objDto.getSaldo());
+	public Cartao saldoCartaoDTO(CartaoDTO saldoDto) {
+		return new Cartao(saldoDto.getId(), saldoDto.getTipo(), saldoDto.getNumero(), saldoDto.getTitular(),
+				saldoDto.getDataValidade(), saldoDto.getCodigoSeguranca(), saldoDto.getSenha(), saldoDto.getSaldo());
 	}
+
 	public Cartao newCartaoDto(CartaoDTO cartaoDto) {
 		return new Cartao(cartaoDto.getId(), cartaoDto.getTipo(), cartaoDto.getNumero(), cartaoDto.getTitular(),
 				cartaoDto.getDataValidade(), cartaoDto.getCodigoSeguranca(), cartaoDto.getSenha());
 	}
+
 }

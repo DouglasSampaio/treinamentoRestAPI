@@ -49,6 +49,12 @@ public class Cartao implements Serializable {
 		this.senha = senha;
 		this.saldo = saldo;
 	}
+	
+	public Cartao(String numero, String senha) {
+		super();
+		this.numero = numero;
+		this.senha = senha;
+	}
 	public String getId() {
 		return id;
 	}
