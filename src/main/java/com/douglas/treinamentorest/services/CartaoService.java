@@ -15,30 +15,46 @@ import com.douglas.treinamentorest.services.exception.ObjectNotFoundException;
 public class CartaoService {
 
 	@Autowired
-	private CartaoRepository repo;
+	private CartaoRepository repository;
 
 	public List<Cartao> finAll() {
-		return repo.findAll();
+		return repository.findAll();
 	}
 
 	public Cartao findById(String id) {
-		Optional<Cartao> obj = repo.findById(id);
+		Optional<Cartao> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Cartao nao encontrado"));
+	}
+	
+	public Cartao findByNumero(String numero) {
+	    Optional<Cartao> obj = repository.findByNumero(numero);
+	    return obj.orElseThrow(() -> new ObjectNotFoundException("Cartão não encontrado"));
 	}
 
 	public Cartao insert(Cartao obj) {
-		return repo.insert(obj);
+		return repository.insert(obj);
 	}
 
 	public void delete(String id) {
 		findById(id);
-		repo.deleteById(id);
+		repository.deleteById(id);
 	}
 
+	
+//	public Cartao autorizarTransacao(String id, String senha, double valor) {
+//	    Optional<Cartao> obj = repository.findById(id);
+//	    if (obj.isEmpty() || !obj.get().getSenha().equals(senha) || obj.get().getSaldo() < valor) {
+//	        return obj.orElseThrow(() -> new ObjectNotFoundException("Cartão não autorizado"));
+//	    }    
+//	    Cartao cartao = obj.get();
+//	    cartao.setSaldo(cartao.getSaldo() - valor);    
+//	    return repository.save(cartao);
+//	}
+	
 	public Cartao update(Cartao obj) {
 		Cartao newObj = findById(obj.getId());
 		updateData(newObj, obj);
-		return repo.save(newObj);
+		return repository.save(newObj);
 	}
 
 	private void updateData(Cartao newObj, Cartao obj) {
