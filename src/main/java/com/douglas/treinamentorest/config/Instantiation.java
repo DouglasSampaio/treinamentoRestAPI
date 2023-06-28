@@ -18,11 +18,11 @@ public class Instantiation implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		cartaoRepository.deleteAll();
-		Cartao douglas = new Cartao(null, "Refeição", "123456456", "Dougbala", "10/30", 000, "édoce");
-		Cartao crain = new Cartao(null, "Alimentação", "888888888", "Crain", "10/30", 001, "naoédoce");
-		Cartao tamburete = new Cartao(null, "Refeição", "846543232", "Tamburete", "10/30", 002, "azedo");
+		Cartao douglas = new Cartao(null,"123456456",250, "456");
+		Cartao crain = new Cartao(null,"888888888",288, "654");
+		Cartao mopa = new Cartao(null,"789456123",304, "777");
 
-		cartaoRepository.saveAll(Arrays.asList(douglas, crain, tamburete));
+		cartaoRepository.saveAll(Arrays.asList(douglas, crain, mopa));
 	}
 
 }

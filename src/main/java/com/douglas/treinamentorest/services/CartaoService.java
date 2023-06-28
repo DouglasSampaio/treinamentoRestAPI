@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.douglas.treinamentorest.domain.Cartao;
 import com.douglas.treinamentorest.dto.CartaoDTO;
 import com.douglas.treinamentorest.repository.CartaoRepository;
-import com.douglas.treinamentorest.services.exception.ObjectNotFoundException;
 
 @Service
 public class CartaoService {
@@ -17,26 +16,17 @@ public class CartaoService {
 	@Autowired
 	private CartaoRepository repository;
 
-	public List<Cartao> finAll() {
+	public List<Cartao> findAll() {
 		return repository.findAll();
 	}
-
-	public Cartao findById(String id) {
-		Optional<Cartao> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("id nao encontrado"));
+	
+	public Cartao findBySaldo(String numeroCartao) {
+		Optional<Cartao> obj = repository.findByNumero(numeroCartao);
+		return obj.orElseThrow(() -> new RuntimeException());
 	}
 
-	public Cartao findByNumero(String numero) {
-		Optional<Cartao> obj = repository.findByNumero(numero);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Cartão não encontrado"));
-	}
-	public Cartao findBySaldo(String numero) {
-		Optional<Cartao> obj = repository.findByNumero(numero);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Cartão não encontrado"));
-	}
-
-	public Optional<Cartao> findByNumeroTeste(String numero) {
-		Optional<Cartao> obj = repository.findByNumero(numero);
+	public Optional<Cartao> findByNumero(String numeroCartao) {
+		Optional<Cartao> obj = repository.findByNumero(numeroCartao);
 		return obj;
 	}
 
@@ -45,35 +35,25 @@ public class CartaoService {
 
 	}
 
-	public void delete(String id) {
-		findById(id);
-		repository.deleteById(id);
-	}
-
 	public Cartao update(Cartao obj) {
-		Cartao newObj = findById(obj.getId());
+		Cartao newObj = findBySaldo(obj.getNumero());
 		updateData(newObj, obj);
 		return repository.save(newObj);
 	}
 
 	private void updateData(Cartao newObj, Cartao obj) {
 		newObj.setNumero(obj.getNumero());
-		newObj.setTipo(obj.getTipo());
-		newObj.setTitular(obj.getTitular());
-		newObj.setDataValidade(obj.getDataValidade());
 		newObj.setCodigoSeguranca(obj.getCodigoSeguranca());
 		newObj.setSenha(obj.getSenha());
 		newObj.setSaldo(obj.getSaldo());
 	}
 
 	public Cartao saldoCartaoDTO(CartaoDTO saldoDto) {
-		return new Cartao(saldoDto.getId(), saldoDto.getTipo(), saldoDto.getNumero(), saldoDto.getTitular(),
-				saldoDto.getDataValidade(), saldoDto.getCodigoSeguranca(), saldoDto.getSenha(), saldoDto.getSaldo());
+		return new Cartao(saldoDto.getId(), saldoDto.getNumero(), saldoDto.getCodigoSeguranca(), saldoDto.getSenha(), saldoDto.getSaldo());
 	}
 
 	public Cartao newCartaoDto(CartaoDTO cartaoDto) {
-		return new Cartao(cartaoDto.getId(), cartaoDto.getTipo(), cartaoDto.getNumero(), cartaoDto.getTitular(),
-				cartaoDto.getDataValidade(), cartaoDto.getCodigoSeguranca(), cartaoDto.getSenha());
+		return new Cartao(cartaoDto.getId(), cartaoDto.getNumero(),cartaoDto.getCodigoSeguranca(), cartaoDto.getSenha());
 	}
 
 }

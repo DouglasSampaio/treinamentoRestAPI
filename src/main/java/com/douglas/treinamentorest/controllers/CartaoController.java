@@ -7,11 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,75 +30,64 @@ public class CartaoController {
 
 	@GetMapping
 	public ResponseEntity<List<CartaoDTO>> findAll() {
-		List<Cartao> list = service.finAll();
+		List<Cartao> list = service.findAll();
 		List<CartaoDTO> listDto = list.stream().map(x -> new CartaoDTO(x)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 
-	@GetMapping(value = "/user/{id}")
-	public ResponseEntity<CartaoDTO> findById(@PathVariable String id) {
-		Cartao obj = service.findById(id);
-		return ResponseEntity.ok().body(new CartaoDTO(obj));
-	}
-
 	@GetMapping("/{numero}")
 	public ResponseEntity<CartaoSaldoDTO> findBySaldo(@PathVariable String numero) {
-		Cartao obj = service.findByNumero(numero);
-		return ResponseEntity.ok().body(new CartaoSaldoDTO(obj));
+		try {
+			Cartao obj = service.findBySaldo(numero);
+			return ResponseEntity.ok().body(new CartaoSaldoDTO(obj));
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 
 	@PostMapping
 	public ResponseEntity<CartaoCreateDTO> insert(@RequestBody CartaoDTO cartaoDTO) {
 		String senha = cartaoDTO.getSenha();
 		String numeroCartao = cartaoDTO.getNumero();
-		CartaoCreateDTO responseTeste = new CartaoCreateDTO(senha, numeroCartao);
-		Optional<Cartao> existingCartao = service.findByNumeroTeste(numeroCartao);
-		if (existingCartao.isPresent()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseTeste);
-		}
+		CartaoCreateDTO response = new CartaoCreateDTO(numeroCartao, senha);
 
-		CartaoCreateDTO response = new CartaoCreateDTO("Criação com sucesso: Status Code: 201", senha, numeroCartao);
-		Cartao obj = service.newCartaoDto(cartaoDTO);
-		obj = service.insert(obj);
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		try {
+			Optional<Cartao> existingCartao = service.findByNumero(numeroCartao);
+			if (existingCartao.isPresent()) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+			}
+			Cartao obj = service.newCartaoDto(cartaoDTO);
+			obj = service.insert(obj);
+
+			return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+		}
 	}
 
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable String id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
+	@PostMapping("/transacao")
+	public ResponseEntity<String> autorizarTransacao(@RequestBody TransacaoDTO transacaoDTO) {
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@RequestBody CartaoDTO objDto, @PathVariable String id) {
-		Cartao obj = service.saldoCartaoDTO(objDto);
-		obj.setId(id);
-		obj = service.update(obj);
-		return ResponseEntity.noContent().build();
-	}
+		try {
+			System.out.println(transacaoDTO.getNumero());
+			Cartao cartao = service.findBySaldo(transacaoDTO.getNumero());
 
-	@PostMapping("/{numero}/transacao")
-	public ResponseEntity<String> autorizarTransacao(@PathVariable String numero,
-			@RequestBody TransacaoDTO transacaoDTO) {
-		Cartao cartao = service.findByNumero(numero);
+			if (!cartao.getSenha().equals(transacaoDTO.getSenha())) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("SENHA_INVALIDA");
+			}
 
-		if (cartao == null) {
-			return ResponseEntity.notFound().build();
-		}
-		if (cartao.getCodigoSeguranca() != transacaoDTO.getCodigoSeguranca()) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Código de segurança incorreto");
-		}
-		if (!cartao.getSenha().equals(transacaoDTO.getSenha())) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta");
-		}
-		double valor = transacaoDTO.getValor();
-		if (cartao.getSaldo() < valor) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Saldo insuficiente");
-		}
-		cartao.setSaldo(cartao.getSaldo() - valor);
-		service.update(cartao);
+			double valor = transacaoDTO.getValor();
+			if (cartao.getSaldo() < valor) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("SALDO_INSUFICIENTE");
+			}
 
-		return ResponseEntity.ok("Transação autorizada");
+			cartao.setSaldo(cartao.getSaldo() - valor);
+			service.update(cartao);
+
+			return ResponseEntity.status(HttpStatus.CREATED).body("OK");
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("CARTAO_INEXISTENTE");
+		}
 	}
 
 }

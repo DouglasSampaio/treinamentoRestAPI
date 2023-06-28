@@ -13,10 +13,7 @@ public class Cartao implements Serializable {
 
 	@Id
 	private String id;
-	private String tipo;
 	private String numero;
-	private String titular;
-	private String dataValidade;
 	private int codigoSeguranca;
 	private String senha;
 	private double saldo;
@@ -25,36 +22,30 @@ public class Cartao implements Serializable {
 	public Cartao() {
 	}
 
-	public Cartao(String id, String tipo, String numero, String titular, String dataValidade, int codigoSeguranca,
-			String senha) {
+	public Cartao(String id, String numero, int codigoSeguranca, String senha) {
 		super();
 		this.id = id;
-		this.tipo = tipo;
 		this.numero = numero;
-		this.titular = titular;
-		this.dataValidade = dataValidade;
 		this.codigoSeguranca = codigoSeguranca;
 		this.senha = senha;
 		this.saldo = 500;
 	}
-	public Cartao(String id, String tipo, String numero, String titular, String dataValidade, int codigoSeguranca,
-			String senha, double saldo) {
+
+	public Cartao(String id, String numero, int codigoSeguranca, String senha, double saldo) {
 		super();
 		this.id = id;
-		this.tipo = tipo;
 		this.numero = numero;
-		this.titular = titular;
-		this.dataValidade = dataValidade;
 		this.codigoSeguranca = codigoSeguranca;
 		this.senha = senha;
 		this.saldo = saldo;
 	}
-	
+
 	public Cartao(String numero, String senha) {
 		super();
 		this.numero = numero;
 		this.senha = senha;
 	}
+
 	public String getId() {
 		return id;
 	}
@@ -63,36 +54,12 @@ public class Cartao implements Serializable {
 		this.id = id;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
 	public String getNumero() {
 		return numero;
 	}
 
 	public void setNumero(String numero) {
 		this.numero = numero;
-	}
-
-	public String getTitular() {
-		return titular;
-	}
-
-	public void setTitular(String titular) {
-		this.titular = titular;
-	}
-
-	public String getDataValidade() {
-		return dataValidade;
-	}
-
-	public void setDataValidade(String dataValidade) {
-		this.dataValidade = dataValidade;
 	}
 
 	public int getCodigoSeguranca() {
@@ -142,9 +109,5 @@ public class Cartao implements Serializable {
 			return false;
 		Cartao other = (Cartao) obj;
 		return Objects.equals(id, other.id);
-	}
-
-	public void realizarPagamento(double valor) {
-		System.out.println("Pagamento de R$" + valor + " realizado com sucesso com o cartão " + numero);
 	}
 }

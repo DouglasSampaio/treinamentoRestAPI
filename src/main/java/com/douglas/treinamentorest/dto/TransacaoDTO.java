@@ -1,6 +1,7 @@
 package com.douglas.treinamentorest.dto;
 
-public class TransacaoDTO {
+public class TransacaoDTO extends CartaoDTO{
+	private static final long serialVersionUID = 1L;
 
 	private String senha;
 

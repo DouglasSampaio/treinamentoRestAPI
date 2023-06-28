@@ -7,14 +7,7 @@ public class CartaoCreateDTO implements Serializable {
 
 	private String numero;
 	private String senha;
-	private String mensagem;
 
-	public CartaoCreateDTO(String mensagem, String numero, String senha) {
-		super();
-		this.mensagem = mensagem;
-		this.numero = numero;
-		this.senha = senha;
-	}
 	public CartaoCreateDTO(String numero, String senha) {
 		this.numero = numero;
 		this.senha = senha;
@@ -34,15 +27,6 @@ public class CartaoCreateDTO implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	public String getMensagem() {
-		return mensagem;
-	}
-
-	public void setMensagem(String string) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
