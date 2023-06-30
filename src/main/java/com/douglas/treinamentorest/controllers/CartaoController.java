@@ -39,7 +39,8 @@ public class CartaoController {
 	public ResponseEntity<CartaoSaldoDTO> findBySaldo(@PathVariable String numero) {
 		try {
 			Cartao obj = service.findBySaldo(numero);
-			return ResponseEntity.ok().body(new CartaoSaldoDTO(obj));
+			CartaoSaldoDTO saldoDTO = new CartaoSaldoDTO(obj.getSaldo());
+			return ResponseEntity.status(HttpStatus.OK).body(saldoDTO);
 		} catch (RuntimeException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
